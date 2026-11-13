@@ -43,9 +43,17 @@
 
 ## 安装 / 卸载
 
+仓库地址：<https://github.com/lnyuqian/dsh-sidebar-cards>
+
 ```powershell
-# 安装（在 DSH 里让 Agent 执行，或手动）
-# plugin_manager install_bundle -> <本仓库目录>
+# 1) 克隆到任意目录
+git clone https://github.com/lnyuqian/dsh-sidebar-cards.git
+
+# 2) 在 DSH 里安装该目录（任选其一）
+#    - 让 Agent 执行 plugin_manager install_bundle，target 指向克隆目录
+#    - 或在 DSH 插件页用「从本地安装」选择该目录
+
+# 3) 重启 DSH 桌面版（Client 插件必须重启才生效）
 
 # 停用（恢复官方侧栏，重启后生效）
 # plugin_manager set_plugin -> target: include:dsh-sidebar-cards, enabled: false
