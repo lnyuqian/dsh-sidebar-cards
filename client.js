@@ -762,19 +762,14 @@ window.__ModuleLoader__.load({
     /* ---------------------------- 样式 ---------------------------- */
 
     const STYLE_TEXT = `
-      .dsc-root{display:flex;flex-direction:column;align-items:stretch;gap:0;height:100%;min-height:320px;overflow-y:auto;overflow-x:hidden;padding:0 8px 10px;box-sizing:border-box;}
+      .dsc-root{display:flex;flex-direction:column;align-items:stretch;gap:4px;height:100%;min-height:320px;overflow-y:auto;overflow-x:hidden;padding:0 8px 10px;box-sizing:border-box;}
       .dsc-top-space{flex:0 0 6px;height:6px;}
-      /* 用户 2026-11-13：五张卡片合并为一个大卡片，卡间无间距；宽度对齐上方「新建会话」按钮 */
-      .dsc-stack{display:flex;flex-direction:column;gap:0;width:var(--dsc-card-w,100%);margin:0 auto;background:var(--dsw-alias-bg-layer-1,#fff);border-radius:8px;box-shadow:0 0 0 1px rgba(0,0,0,.05);flex:0 0 auto;}
+      /* 用户 2026-11-13（第2版）：每张卡片是独立完整框（标题行 + 内容同框），卡间 4px；宽度对齐上方「新建会话」按钮 */
       .dsc-root::-webkit-scrollbar{width:6px;}
       .dsc-root::-webkit-scrollbar-thumb{background:rgba(0,0,0,.14);border-radius:3px;}
-      .dsc-card{width:100%;margin:0;background:transparent;border-radius:0;box-shadow:none;flex:0 0 auto;}
-      .dsc-card + .dsc-card{border-top:1px solid rgba(0,0,0,.07);}
-      .dsc-stack > .dsc-card:first-child .dsc-head{border-radius:8px 8px 0 0;}
-      .dsc-stack > .dsc-card:last-child .dsc-body{border-radius:0 0 8px 8px;}
-      .dsc-head{position:sticky;top:0;z-index:3;display:flex;align-items:center;height:30px;padding:0 12px 0 12px;background:#e3e3e3;border-radius:0;cursor:pointer;user-select:none;}
-      .dsc-card.dsc-collapsed .dsc-head{border-radius:0;}
-      .dsc-stack > .dsc-card.dsc-collapsed:last-child .dsc-head{border-radius:0 0 8px 8px;}
+      .dsc-card{width:var(--dsc-card-w,100%);margin:0 auto;background:var(--dsw-alias-bg-layer-1,#fff);border-radius:8px;box-shadow:0 0 0 1px rgba(0,0,0,.06);flex:0 0 auto;box-sizing:border-box;}
+      .dsc-head{position:sticky;top:0;z-index:3;display:flex;align-items:center;width:100%;box-sizing:border-box;height:30px;padding:0 12px 0 12px;background:#e3e3e3;border-radius:8px 8px 0 0;cursor:pointer;user-select:none;}
+      .dsc-card.dsc-collapsed .dsc-head{border-radius:8px;}
       .dsc-title{font-size:15px;font-weight:700;color:#1c1c1c;letter-spacing:.01em;white-space:nowrap;}
       .dsc-count{font-size:11px;font-weight:600;color:#6a6a6a;background:rgba(0,0,0,.07);border-radius:9px;padding:1px 6px;margin-left:7px;}
       .dsc-arrow{margin-left:auto;width:20px;height:20px;display:grid;place-items:center;color:#5a5a5a;border-radius:4px;flex:0 0 20px;}
@@ -1730,7 +1725,7 @@ window.__ModuleLoader__.load({
         { className: 'dsc-root' },
         h('style', null, STYLE_TEXT),
         h('div', { className: 'dsc-top-space' }),
-        h('div', { className: 'dsc-stack' }, cards),
+        cards,
         h(Menu, { state: menu, onClose: closeMenu }),
       )
     }
