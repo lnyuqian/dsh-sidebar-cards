@@ -129,3 +129,20 @@
 - 卡片布局属性全部加 !important：display:flex / flex-direction:column / align-items:stretch / justify-content:flex-start / width:100% / margin:0 / padding:0 / background / border-radius / box-shadow / overflow
 - 收起态 ackground:transparent !important、ox-shadow:none !important
 - 标题行 width:100% / height:30px / margin:0 / padding:0 12px / flex:0 0 30px 全部 !important（背景与圆角不加，保留内联玻璃质感）
+
+## 0.1.1 — 2026-11-13（DSH 0.2.2-rc.1 实测）
+
+### 布局
+
+- 5 张独立卡片，卡间间距 4px；卡片左右边界对齐左栏「新建会话」按钮（运行时读取按钮 rect，逐边对齐）
+- 标题行与卡片同宽、贴卡片顶端：卡片 \overflow:hidden\ 由圆角裁切，标题行 \order-radius:0\、\width:100%\、\margin:0\
+- 收起状态只显示标题：\.dsc-card.dsc-collapsed\ 背景透明、去描边、\overflow:visible\，标题行自带 8px 圆角
+
+### 关键修复（宿主样式冲突）
+
+诊断读数 \card=250x52 head=224x30 dx=13 dy=11 col=1 bg=rgb…\ 证明：**DSH 0.2.2-rc.1 对 \<section>\ 有全局样式**（内边距 + 居中对齐 + 背景），
+会压过插件的布局规则。现已对关键属性统一加 \!important\。
+
+### 移除
+
+- 移除临时诊断探针（侧栏顶部 \DBG\ 行）

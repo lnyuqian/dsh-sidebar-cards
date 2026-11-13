@@ -1137,23 +1137,6 @@ window.__ModuleLoader__.load({
             const padRight = Math.max(0, Math.round(rootRect.right - b.right))
             rootEl.style.paddingLeft = padLeft + 'px'
             rootEl.style.paddingRight = padRight + 'px'
-            const dbg = rootEl.querySelector('.dsc-debug')
-            const card = rootEl.querySelector('.dsc-card')
-            const head = rootEl.querySelector('.dsc-head')
-            if (dbg && card && head) {
-              const c = card.getBoundingClientRect()
-              const hd = head.getBoundingClientRect()
-              const cs = getComputedStyle(card)
-              const hs = getComputedStyle(head)
-              dbg.textContent =
-                'DBG v7 card=' + Math.round(c.width) + 'x' + Math.round(c.height) +
-                ' head=' + Math.round(hd.width) + 'x' + Math.round(hd.height) +
-                ' dx=' + Math.round(hd.left - c.left) + ' dy=' + Math.round(hd.top - c.top) +
-                ' col=' + (card.classList.contains('dsc-collapsed') ? 1 : 0) +
-                ' bg=' + cs.backgroundColor +
-                ' pad=' + hs.paddingLeft + '/' + hs.paddingRight +
-                ' rad=' + hs.borderRadius
-            }
           } catch {
             /* ignore */
           }
@@ -1755,14 +1738,6 @@ window.__ModuleLoader__.load({
         { className: 'dsc-root' },
         h('style', null, STYLE_TEXT),
         h('div', { className: 'dsc-top-space' }),
-        h(
-          'div',
-          {
-            className: 'dsc-debug',
-            style: { fontSize: 9, lineHeight: '12px', color: '#c00', padding: '0 2px', whiteSpace: 'nowrap', overflow: 'hidden' },
-          },
-          'DBG',
-        ),
         cards,
         h(Menu, { state: menu, onClose: closeMenu }),
       )
