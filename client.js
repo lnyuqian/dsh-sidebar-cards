@@ -762,13 +762,19 @@ window.__ModuleLoader__.load({
     /* ---------------------------- 样式 ---------------------------- */
 
     const STYLE_TEXT = `
-      .dsc-root{display:flex;flex-direction:column;align-items:stretch;gap:6px;height:100%;min-height:320px;overflow-y:auto;overflow-x:hidden;padding:0 4px 10px;box-sizing:border-box;}
+      .dsc-root{display:flex;flex-direction:column;align-items:stretch;gap:0;height:100%;min-height:320px;overflow-y:auto;overflow-x:hidden;padding:0 8px 10px;box-sizing:border-box;}
       .dsc-top-space{flex:0 0 6px;height:6px;}
+      /* 用户 2026-11-13：五张卡片合并为一个大卡片，卡间无间距；宽度对齐上方「新建会话」按钮 */
+      .dsc-stack{display:flex;flex-direction:column;gap:0;width:var(--dsc-card-w,100%);margin:0 auto;background:var(--dsw-alias-bg-layer-1,#fff);border-radius:8px;box-shadow:0 0 0 1px rgba(0,0,0,.05);flex:0 0 auto;}
       .dsc-root::-webkit-scrollbar{width:6px;}
       .dsc-root::-webkit-scrollbar-thumb{background:rgba(0,0,0,.14);border-radius:3px;}
-      .dsc-card{width:calc(100% - 4px);margin-left:auto;margin-right:auto;background:var(--dsw-alias-bg-layer-1,#fff);border-radius:8px;box-shadow:0 0 0 1px rgba(0,0,0,.05);flex:0 0 auto;}
-      .dsc-head{position:sticky;top:0;z-index:3;display:flex;align-items:center;height:30px;padding:0 12px 0 12px;background:#e3e3e3;border-radius:8px 8px 0 0;cursor:pointer;user-select:none;}
-      .dsc-card.dsc-collapsed .dsc-head{border-radius:8px;}
+      .dsc-card{width:100%;margin:0;background:transparent;border-radius:0;box-shadow:none;flex:0 0 auto;}
+      .dsc-card + .dsc-card{border-top:1px solid rgba(0,0,0,.07);}
+      .dsc-stack > .dsc-card:first-child .dsc-head{border-radius:8px 8px 0 0;}
+      .dsc-stack > .dsc-card:last-child .dsc-body{border-radius:0 0 8px 8px;}
+      .dsc-head{position:sticky;top:0;z-index:3;display:flex;align-items:center;height:30px;padding:0 12px 0 12px;background:#e3e3e3;border-radius:0;cursor:pointer;user-select:none;}
+      .dsc-card.dsc-collapsed .dsc-head{border-radius:0;}
+      .dsc-stack > .dsc-card.dsc-collapsed:last-child .dsc-head{border-radius:0 0 8px 8px;}
       .dsc-title{font-size:15px;font-weight:700;color:#1c1c1c;letter-spacing:.01em;white-space:nowrap;}
       .dsc-count{font-size:11px;font-weight:600;color:#6a6a6a;background:rgba(0,0,0,.07);border-radius:9px;padding:1px 6px;margin-left:7px;}
       .dsc-arrow{margin-left:auto;width:20px;height:20px;display:grid;place-items:center;color:#5a5a5a;border-radius:4px;flex:0 0 20px;}
@@ -1101,6 +1107,38 @@ window.__ModuleLoader__.load({
               /* ignore */
             }
           }
+        }
+      }, [])
+
+      // 用户 2026-11-13：卡片宽度对齐左栏「新建会话」按钮（运行时实测，DSH 改版也能跟上）
+      useEffect(() => {
+        const measure = () => {
+          try {
+            const rootEl = document.querySelector('.dsc-root')
+            if (!rootEl) return
+            const scope = rootEl.closest('aside') || document
+            let width = 0
+            for (const node of scope.querySelectorAll('button, a, [role="button"]')) {
+              if (rootEl.contains(node)) continue
+              const text = (node.textContent || '').trim()
+              if (text.indexOf('新建会话') === -1 && text.indexOf('新会话') === -1) continue
+              const rect = node.getBoundingClientRect()
+              if (rect.width > 60) {
+                width = rect.width
+                break
+              }
+            }
+            if (width) rootEl.style.setProperty('--dsc-card-w', Math.round(width) + 'px')
+          } catch {
+            /* ignore */
+          }
+        }
+        measure()
+        const timer = setTimeout(measure, 600)
+        window.addEventListener('resize', measure)
+        return () => {
+          clearTimeout(timer)
+          window.removeEventListener('resize', measure)
         }
       }, [])
 
@@ -1692,7 +1730,7 @@ window.__ModuleLoader__.load({
         { className: 'dsc-root' },
         h('style', null, STYLE_TEXT),
         h('div', { className: 'dsc-top-space' }),
-        cards,
+        h('div', { className: 'dsc-stack' }, cards),
         h(Menu, { state: menu, onClose: closeMenu }),
       )
     }
