@@ -2,6 +2,10 @@
 
 把 DSH 桌面版左侧栏的「会话浏览区」（`sidebar.workspaces`）替换成 5 张卡片，其余部分（logo / HARNESS、新会话 Ctrl+N、底部设置、主对话区）完全不动。
 
+![侧栏预览](assets/preview.png)
+
+> 示意图，会话/工作区均为示例数据。
+
 ## 卡片结构
 
 | 卡片 | 默认 | 内容来源 | 展开规则 |
@@ -44,6 +48,19 @@
 ## 安装 / 卸载
 
 仓库地址：<https://github.com/lnyuqian/dsh-sidebar-cards>
+
+**方式一：一键脚本（推荐）**
+
+```powershell
+git clone https://github.com/lnyuqian/dsh-sidebar-cards.git
+cd dsh-sidebar-cards
+powershell -NoProfile -ExecutionPolicy Bypass -File .\install.ps1 -Proxy http://127.0.0.1:7890
+```
+
+脚本会：克隆/更新到 `%USERPROFILE%\.dsh\plugins\dsh-sidebar-cards` → 尝试安装到 profile → 打印最后一步。
+> 注意：**桌面版 profile 由 Electron 独占管理**，CLI 无法写入（DSH 的既定限制）；web profile 可全自动。桌面版脚本会给出「让 Agent 一句话安装」的提示，复制粘贴即可。
+
+**方式二：手动**
 
 ```powershell
 # 1) 克隆到任意目录
