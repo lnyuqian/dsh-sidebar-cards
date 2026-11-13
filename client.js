@@ -767,9 +767,9 @@ window.__ModuleLoader__.load({
       /* 用户 2026-11-13（第2版）：每张卡片是独立完整框（标题行 + 内容同框），卡间 4px；宽度对齐上方「新建会话」按钮 */
       .dsc-root::-webkit-scrollbar{width:6px;}
       .dsc-root::-webkit-scrollbar-thumb{background:rgba(0,0,0,.14);border-radius:3px;}
-      .dsc-card{width:100%;margin:0;background:var(--dsw-alias-bg-layer-1,#fff);border-radius:8px;box-shadow:0 0 0 1px rgba(0,0,0,.06);overflow:hidden;flex:0 0 auto;box-sizing:border-box;}
+      .dsc-card{display:flex;flex-direction:column;align-items:stretch;width:100%;margin:0;background:var(--dsw-alias-bg-layer-1,#fff);border-radius:8px;box-shadow:0 0 0 1px rgba(0,0,0,.06);overflow:hidden;flex:0 0 auto;box-sizing:border-box;}
       .dsc-card.dsc-collapsed{background:transparent;box-shadow:none;overflow:visible;}
-      .dsc-head{position:sticky;top:0;z-index:3;display:flex;align-items:center;width:100%;box-sizing:border-box;height:30px;margin:0;padding:0 12px 0 12px;background:#e3e3e3;border-radius:0;cursor:pointer;user-select:none;}
+      .dsc-head{flex:0 0 30px;position:sticky;top:0;z-index:3;display:flex;align-items:center;width:100%;box-sizing:border-box;height:30px;margin:0;padding:0 12px 0 12px;background:#e3e3e3;border-radius:0;cursor:pointer;user-select:none;}
       .dsc-card.dsc-collapsed .dsc-head{border-radius:8px;}
       .dsc-title{font-size:15px;font-weight:700;color:#1c1c1c;letter-spacing:.01em;white-space:nowrap;}
       .dsc-count{font-size:11px;font-weight:600;color:#6a6a6a;background:rgba(0,0,0,.07);border-radius:9px;padding:1px 6px;margin-left:7px;}
@@ -1137,6 +1137,23 @@ window.__ModuleLoader__.load({
             const padRight = Math.max(0, Math.round(rootRect.right - b.right))
             rootEl.style.paddingLeft = padLeft + 'px'
             rootEl.style.paddingRight = padRight + 'px'
+            const dbg = rootEl.querySelector('.dsc-debug')
+            const card = rootEl.querySelector('.dsc-card')
+            const head = rootEl.querySelector('.dsc-head')
+            if (dbg && card && head) {
+              const c = card.getBoundingClientRect()
+              const hd = head.getBoundingClientRect()
+              const cs = getComputedStyle(card)
+              const hs = getComputedStyle(head)
+              dbg.textContent =
+                'DBG v7 card=' + Math.round(c.width) + 'x' + Math.round(c.height) +
+                ' head=' + Math.round(hd.width) + 'x' + Math.round(hd.height) +
+                ' dx=' + Math.round(hd.left - c.left) + ' dy=' + Math.round(hd.top - c.top) +
+                ' col=' + (card.classList.contains('dsc-collapsed') ? 1 : 0) +
+                ' bg=' + cs.backgroundColor +
+                ' pad=' + hs.paddingLeft + '/' + hs.paddingRight +
+                ' rad=' + hs.borderRadius
+            }
           } catch {
             /* ignore */
           }
@@ -1738,6 +1755,14 @@ window.__ModuleLoader__.load({
         { className: 'dsc-root' },
         h('style', null, STYLE_TEXT),
         h('div', { className: 'dsc-top-space' }),
+        h(
+          'div',
+          {
+            className: 'dsc-debug',
+            style: { fontSize: 9, lineHeight: '12px', color: '#c00', padding: '0 2px', whiteSpace: 'nowrap', overflow: 'hidden' },
+          },
+          'DBG',
+        ),
         cards,
         h(Menu, { state: menu, onClose: closeMenu }),
       )
