@@ -1,0 +1,47 @@
+{
+  "name": "dsh-sidebar-cards",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "左侧边栏卡片化插件：把 DSH 桌面版的会话浏览区重排为 插件 / 一周会话 / 置顶会话 / 自动化任务会话 / 工作区 五张卡片。",
+  "license": "MIT",
+  "exports": {
+    ".": "./index.js",
+    "./client": "./client.js"
+  },
+  "files": [
+    "index.js",
+    "client.js",
+    "cordis.patch.yml",
+    "README.md",
+    "CHANGELOG.md"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "immediately": true,
+      "inject": [
+        "@deepseek-ai/dsh-client-ui-sidebar",
+        "@deepseek-ai/dsh-api-remotes",
+        "@deepseek-ai/dsh-api-session-controller",
+        "@deepseek-ai/dsh-api-workspace-controller",
+        "@deepseek-ai/dsh-client-connection"
+      ]
+    }
+  },
+  "keywords": [
+    "dsh",
+    "deepseek-harness",
+    "plugin",
+    "sidebar",
+    "ui"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lnyuqian/dsh-sidebar-cards.git"
+  },
+  "homepage": "https://github.com/lnyuqian/dsh-sidebar-cards"
+}
