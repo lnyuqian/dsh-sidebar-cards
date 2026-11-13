@@ -207,6 +207,10 @@ window.__ModuleLoader__.load({
       const id = firstOf(row, ['sessionId', 'id'])
       if (!id) return null
       const title = findDeep(row, ['title', 'displayTitle', 'name', 'summary']) || ''
+      // 子代理会话：带 parentSessionId 或 origin=subagent，一律不进侧栏
+      const parentSessionId = firstOf(row, ['parentSessionId', 'parentSession'])
+      const origin = firstOf(row, ['origin'])
+      const subagent = !!parentSessionId || origin === 'subagent'
       const updatedAt = toMs(findDeep(row, ['updatedAt', 'lastUpdatedAt', 'updated']))
       const createdAt = toMs(findDeep(row, ['createdAt', 'created']))
       return {
@@ -214,6 +218,7 @@ window.__ModuleLoader__.load({
         title: typeof title === 'string' ? title : '',
         createdAt,
         updatedAt,
+        subagent,
         running: !!firstOf(row, ['running', 'isRunning']),
         blank: !!firstOf(row, ['blank', 'isBlank']),
         cwd: firstOf(row, ['cwd', 'workingDirectory']) || '',
@@ -227,7 +232,9 @@ window.__ModuleLoader__.load({
       const out = {}
       for (const row of rows) {
         const normalized = normalizeSessionRow(row)
-        if (normalized) out[normalized.id] = normalized
+        if (!normalized) continue
+        if (normalized.subagent) continue
+        out[normalized.id] = normalized
       }
       return out
     }
