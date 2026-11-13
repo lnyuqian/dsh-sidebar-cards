@@ -762,7 +762,7 @@ window.__ModuleLoader__.load({
     /* ---------------------------- 样式 ---------------------------- */
 
     const STYLE_TEXT = `
-      .dsc-root{display:flex;flex-direction:column;align-items:stretch;gap:4px;height:100%;min-height:320px;overflow-y:auto;overflow-x:hidden;padding:0 16px 10px 0;box-sizing:border-box;}
+      .dsc-root{display:flex;flex-direction:column;align-items:stretch;gap:4px;height:100%;min-height:320px;overflow-y:auto;overflow-x:hidden;padding:0 14px 10px 2px;box-sizing:border-box;}
       .dsc-top-space{flex:0 0 6px;height:6px;}
       /* 用户 2026-11-13（第2版）：每张卡片是独立完整框（标题行 + 内容同框），卡间 4px；宽度对齐上方「新建会话」按钮 */
       .dsc-root::-webkit-scrollbar{width:6px;}
@@ -1106,21 +1106,36 @@ window.__ModuleLoader__.load({
         }
       }, [])
 
-      // 用户 2026-11-13：卡片在左侧栏内左右留白相等（regionArea 左边界比右侧多缩进 12px，纯 CSS 会偏右）
+      // 用户 2026-11-13：卡片左右边界对齐官方「新建会话」按钮（按钮本身在左栏居中，对齐即居中 + 同宽）
       useEffect(() => {
         const center = () => {
           try {
             const rootEl = document.querySelector('.dsc-root')
             if (!rootEl) return
-            const aside = rootEl.closest('aside')
-            if (!aside) return
-            const r = rootEl.getBoundingClientRect()
-            const a = aside.getBoundingClientRect()
-            if (!r.width || !a.width) return
-            const leftGap = Math.round(r.left - a.left)
-            const rightGap = Math.round(a.right - r.right)
-            const scrollbar = Math.max(0, rootEl.offsetWidth - rootEl.clientWidth)
-            const padRight = Math.max(0, leftGap - rightGap - scrollbar)
+            const rootRect = rootEl.getBoundingClientRect()
+            if (!rootRect.width) return
+            const scope = rootEl.closest('aside') || document
+            let btn = null
+            const byClass = scope.querySelector('[class*="newSession"]')
+            if (byClass && !rootEl.contains(byClass)) btn = byClass
+            if (!btn) {
+              for (const node of scope.querySelectorAll('button, a, [role="button"]')) {
+                if (rootEl.contains(node)) continue
+                const text = (node.textContent || '').trim()
+                if (text.indexOf('新会话') === -1) continue
+                const rect = node.getBoundingClientRect()
+                if (rect.width > 100 && rect.top < rootRect.top) {
+                  btn = node
+                  break
+                }
+              }
+            }
+            if (!btn) return
+            const b = btn.getBoundingClientRect()
+            if (!b.width) return
+            const padLeft = Math.max(0, Math.round(b.left - rootRect.left))
+            const padRight = Math.max(0, Math.round(rootRect.right - b.right))
+            rootEl.style.paddingLeft = padLeft + 'px'
             rootEl.style.paddingRight = padRight + 'px'
           } catch {
             /* ignore */

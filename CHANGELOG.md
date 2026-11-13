@@ -107,3 +107,9 @@
 - 卡片水平居中：官方 egionArea 左边界比右边界多缩进 12px，纯 CSS 无论 padding 怎么调，卡片中心都会偏右 6px
 - 改为运行时读取侧栏 side 与 .dsc-root 的实际左右留白，动态补 padding-right（并扣除垂直滚动条宽度），使卡片左右留白相等
 - CSS 兜底 padding-right:16px，JS 未执行时也不会偏太多
+
+### 修订（用户 2026-11-13，第 6 版）
+
+- 参照物由 side 改为官方「新建会话」按钮（[class*="newSession"]，命中失败时按文本 + 位于卡片上方 + 宽度 >100 兜底）
+- 卡片左右边界直接对齐按钮左右边界：padLeft = 按钮.left − root.left、padRight = root.right − 按钮.right，同时拿到「居中」和「与按钮同宽」
+- CSS 兜底按实测改为 padding: 0 14px 10px 2px（实测卡片 [1270,1520] vs 按钮 [1272,1516]）
