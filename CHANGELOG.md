@@ -101,3 +101,9 @@
 - 卡片宽度改为容器 100%，.dsc-root 左右 padding 8px → 6px（按无障碍树实测：侧栏内容区 256px、新建会话按钮 244px，6px×2 正好补齐 12px 差值）
 - 收起状态：.dsc-card.dsc-collapsed 背景透明、去描边、overflow:visible，标题行自带 8px 圆角 —— 只看到标题，卡片背景隐藏
 - 展开状态：卡片白底 + overflow:hidden 裁切，标题行 order-radius:0 满宽，顶部与卡片上沿严格对齐
+
+### 修订（用户 2026-11-13，第 5 版）
+
+- 卡片水平居中：官方 egionArea 左边界比右边界多缩进 12px，纯 CSS 无论 padding 怎么调，卡片中心都会偏右 6px
+- 改为运行时读取侧栏 side 与 .dsc-root 的实际左右留白，动态补 padding-right（并扣除垂直滚动条宽度），使卡片左右留白相等
+- CSS 兜底 padding-right:16px，JS 未执行时也不会偏太多
