@@ -120,3 +120,12 @@
 - 目的：确认「标题不贴顶 / 不重合 / 收起仍有白框」到底是 CSS 未生效还是 class 未加
 - 定位后立即移除
 - 卡片改为 flex column 布局（lex:0 0 30px 标题行），排除 block 布局下的意外偏移
+
+### 修复（用户 2026-11-13，据诊断数据）
+
+诊断读数：card=250x52 head=224x30 dx=13 dy=11 col=1 bg=rgb…
+
+- 标题行比卡片窄 26px、上偏 11px，且 dsc-collapsed 类已加但背景仍是白色 → 宿主全局样式（<section>）压过了 .dsc-card 的布局与背景规则
+- 卡片布局属性全部加 !important：display:flex / flex-direction:column / align-items:stretch / justify-content:flex-start / width:100% / margin:0 / padding:0 / background / border-radius / box-shadow / overflow
+- 收起态 ackground:transparent !important、ox-shadow:none !important
+- 标题行 width:100% / height:30px / margin:0 / padding:0 12px / flex:0 0 30px 全部 !important（背景与圆角不加，保留内联玻璃质感）

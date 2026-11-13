@@ -767,9 +767,9 @@ window.__ModuleLoader__.load({
       /* 用户 2026-11-13（第2版）：每张卡片是独立完整框（标题行 + 内容同框），卡间 4px；宽度对齐上方「新建会话」按钮 */
       .dsc-root::-webkit-scrollbar{width:6px;}
       .dsc-root::-webkit-scrollbar-thumb{background:rgba(0,0,0,.14);border-radius:3px;}
-      .dsc-card{display:flex;flex-direction:column;align-items:stretch;width:100%;margin:0;background:var(--dsw-alias-bg-layer-1,#fff);border-radius:8px;box-shadow:0 0 0 1px rgba(0,0,0,.06);overflow:hidden;flex:0 0 auto;box-sizing:border-box;}
-      .dsc-card.dsc-collapsed{background:transparent;box-shadow:none;overflow:visible;}
-      .dsc-head{flex:0 0 30px;position:sticky;top:0;z-index:3;display:flex;align-items:center;width:100%;box-sizing:border-box;height:30px;margin:0;padding:0 12px 0 12px;background:#e3e3e3;border-radius:0;cursor:pointer;user-select:none;}
+      .dsc-card{display:flex !important;flex-direction:column !important;align-items:stretch !important;justify-content:flex-start !important;width:100% !important;margin:0 !important;padding:0 !important;background:var(--dsw-alias-bg-layer-1,#fff) !important;border-radius:8px !important;box-shadow:0 0 0 1px rgba(0,0,0,.06) !important;overflow:hidden !important;flex:0 0 auto !important;box-sizing:border-box !important;}
+      .dsc-card.dsc-collapsed{background:transparent !important;box-shadow:none !important;overflow:visible !important;}
+      .dsc-head{flex:0 0 30px !important;position:sticky;top:0;z-index:3;display:flex;align-items:center;width:100% !important;box-sizing:border-box !important;height:30px !important;margin:0 !important;padding:0 12px 0 12px !important;background:#e3e3e3;border-radius:0;cursor:pointer;user-select:none;}
       .dsc-card.dsc-collapsed .dsc-head{border-radius:8px;}
       .dsc-title{font-size:15px;font-weight:700;color:#1c1c1c;letter-spacing:.01em;white-space:nowrap;}
       .dsc-count{font-size:11px;font-weight:600;color:#6a6a6a;background:rgba(0,0,0,.07);border-radius:9px;padding:1px 6px;margin-left:7px;}
