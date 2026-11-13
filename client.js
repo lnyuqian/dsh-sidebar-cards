@@ -767,9 +767,9 @@ window.__ModuleLoader__.load({
       /* 用户 2026-11-13（第2版）：每张卡片是独立完整框（标题行 + 内容同框），卡间 4px；宽度对齐上方「新建会话」按钮 */
       .dsc-root::-webkit-scrollbar{width:6px;}
       .dsc-root::-webkit-scrollbar-thumb{background:rgba(0,0,0,.14);border-radius:3px;}
-      .dsc-card{width:var(--dsc-card-w,100%);margin:0 auto;background:var(--dsw-alias-bg-layer-1,#fff);border-radius:8px;box-shadow:0 0 0 1px rgba(0,0,0,.06);flex:0 0 auto;box-sizing:border-box;}
-      .dsc-head{position:sticky;top:0;z-index:3;display:flex;align-items:center;width:100%;box-sizing:border-box;height:30px;padding:0 12px 0 12px;background:#e3e3e3;border-radius:8px 8px 0 0;cursor:pointer;user-select:none;}
-      .dsc-card.dsc-collapsed .dsc-head{border-radius:8px;}
+      .dsc-card{width:var(--dsc-card-w,100%);margin:0 auto;background:var(--dsw-alias-bg-layer-1,#fff);border-radius:8px;box-shadow:0 0 0 1px rgba(0,0,0,.06);overflow:hidden;flex:0 0 auto;box-sizing:border-box;}
+      .dsc-head{position:sticky;top:0;z-index:3;display:flex;align-items:center;width:100%;box-sizing:border-box;height:30px;margin:0;padding:0 12px 0 12px;background:#e3e3e3;border-radius:0;cursor:pointer;user-select:none;}
+      .dsc-card.dsc-collapsed .dsc-head{border-radius:0;}
       .dsc-title{font-size:15px;font-weight:700;color:#1c1c1c;letter-spacing:.01em;white-space:nowrap;}
       .dsc-count{font-size:11px;font-weight:600;color:#6a6a6a;background:rgba(0,0,0,.07);border-radius:9px;padding:1px 6px;margin-left:7px;}
       .dsc-arrow{margin-left:auto;width:20px;height:20px;display:grid;place-items:center;color:#5a5a5a;border-radius:4px;flex:0 0 20px;}
